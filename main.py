@@ -18,8 +18,8 @@ from flet import (Row,
                   TextField, )
 
 
-class Counter(
-):
+
+class Counter(UserControl):
     def __init__(self, name: str, start_counter: int = 0) -> None:
         super().__init__()
         self.name = Text(
