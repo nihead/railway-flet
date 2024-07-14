@@ -8,7 +8,6 @@ logging.basicConfig(level=logging.INFO)
 
 def main(page: ft.Page):
     page.title = "TMA RTLT"
-    page.vertical_alignment = ft.alignment.center
     def route_change(route):
         print(route)
         page.views.clear()
@@ -38,16 +37,6 @@ def main(page: ft.Page):
     page.on_view_pop = view_pop
     page.go(page.route)
 
-
-ft.app(target=main, view=ft.WEB_BROWSER)
-
-'''
-NOTE:
-
-To "navigate" between pages we used page.go(route) - a helper method that 
-updates page.route, calls page.on_route_change event handler to update views 
-and finally calls page.update().
-'''
 
 if __name__ == "__main__":
     ft.app(target=main, view=None, port=int(os.getenv("PORT", 8502)))
