@@ -50,7 +50,8 @@ class Home(ft.View):
                                                 controls=[
                                                     ft.Text("EC", weight=ft.FontWeight.W_600, size=18),
                                                     self.user_id_txt,
-                                                ]
+                                                ],
+                                                vertical_alignment=ft.CrossAxisAlignment.CENTER
                                             ),
                                             padding=10,
                                             margin=10,
@@ -100,10 +101,7 @@ class Home(ft.View):
             ),
         ]
     def on_submit(self, e):
-        self.page.snack_bar = ft.SnackBar(
-            content=ft.Text("Under Development")
-        )
-        self.page.snack_bar.open =True
+        self.page.go("/scanned")
         self.page.update()
 
     def on_user_input(self, e):

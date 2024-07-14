@@ -16,12 +16,13 @@ def main(page: ft.Page):
         page.views.append(
             Home(page)
         )
-        if page.route == "/store":
+        if page.route == "/scanned":
             page.views.append(
                 ft.View(
-                    "/store",
+                    "/scanned",
                     [
-                        ft.AppBar(title=ft.Text("Store"), bgcolor=ft.colors.SURFACE_VARIANT),
+                        ft.AppBar(title=ft.Text("User Scan"), bgcolor=ft.colors.SURFACE_VARIANT),
+                        ft.Text("Under development", bgcolor=ft.colors.SURFACE_VARIANT),
                         ft.ElevatedButton("Go Home", on_click=lambda _: page.go("/")),
                     ],
                 )
