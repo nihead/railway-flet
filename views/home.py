@@ -86,6 +86,7 @@ class Home(ft.View):
                                 padding=20
                             ),
                             margin=20,
+                            width=450,
 
                         ),
                     ],
@@ -97,7 +98,6 @@ class Home(ft.View):
                 alignment=ft.alignment.center,
                 expand=True,
             ),
-            ft.ElevatedButton("Scan", on_click=lambda _: page.go("/store")),
         ]
     def on_submit(self, e):
         self.page.snack_bar = ft.SnackBar(

@@ -16,7 +16,6 @@ import flet as ft
 def main(page: ft.Page):
     page.title = "Routes Example"
     page.vertical_alignment = ft.alignment.center
-
     def route_change(route):
         print(route)
         page.views.clear()
@@ -57,5 +56,5 @@ and finally calls page.update().
 '''
 
 if __name__ == "__main__":
-    # ft.app(target=main, view=None, host="192.168.0.110", port=int(os.getenv("PORT", 8502)))
-    ft.app(target=main)
+    ft.app(target=main, view=None, host="192.168.0.110", port=int(os.getenv("PORT", 8502)))
+    # ft.app(target=main)
