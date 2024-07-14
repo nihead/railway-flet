@@ -1,152 +1,61 @@
 import logging
-import flet as ft
 import os
+import flet as ft
+from views.home import Home
+
+# logging.basicConfig(level=logging.INFO)
 
 
-logging.basicConfig(level=logging.INFO)
+'''
+In this section, we will learn how to navigate between pages.
+'''
 
 import flet as ft
-from flet import (Row,
-                  Column,
-                  Container,
-                  UserControl,
-                  ControlEvent,
-                  Page,
-                  Text,
-                  ElevatedButton,
-                  BottomSheet,
-                  TextField, )
 
 
+def main(page: ft.Page):
+    page.title = "Routes Example"
+    page.vertical_alignment = ft.alignment.center
 
-class Counter(UserControl):
-    def __init__(self, name: str, start_counter: int = 0) -> None:
-        super().__init__()
-        self.name = Text(
-            name,
-            size=25,
-            weight=ft.FontWeight.W_300,
-            color=ft.colors.RED_400
+    def route_change(route):
+        print(route)
+        page.views.clear()
+
+        page.views.append(
+            Home(page)
         )
-        self.counter = start_counter
-        self.counter_text = Text(str(self.counter), size=50, color='blue')
-
-    def counter_add(self, e: ControlEvent) -> None:
-        self.counter += 1
-        self.counter_text.value = str(self.counter)
-        self.update()
-
-    def counter_sub(self, e: ControlEvent) -> None:
-        self.counter -= 1
-        self.counter_text.value = str(self.counter)
-        self.update()
-
-    def build(self) -> Container:
-        return Container(
-            content=Column(
-                controls=[
-                    # Counter header Row
-                    Row(
-                        controls=[self.name],
-                        alignment=ft.MainAxisAlignment.CENTER
-                    ),
-                    # Counter control row
-                    Row(
-                        controls=[
-                            ElevatedButton(
-                                text="Add",
-                                on_click=self.counter_add,
-                            ),
-                            self.counter_text,
-                            ElevatedButton(
-                                text="Sub",
-                                on_click=self.counter_sub,
-                            ),
-                        ],
-                        alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                        spacing=20,
-                        width=500
-                    ),
-                ],
-            ),
-            bgcolor=ft.colors.GREY_50,
-            border_radius=25,
-            padding=12,
-            # height=100,
-        )
-
-
-def input_name(page, e: ControlEvent) -> ft.BottomSheet:
-    counter_name = TextField(
-        hint_text="counter name",
-
-    )
-
-    def dismissed() -> None:
-        pass
-
-    def on_save(name: str, e: ControlEvent) -> None:
-        page.close(bt)
-        page.add(Counter(name, start_counter=0))
-
-    bt = BottomSheet(
-        on_dismiss=dismissed(),
-        content=Column(
-            controls=[
-                Container(
-                    content=None,
-                    width=100,
-                    height=6,
-                    border_radius=3,
-                    bgcolor=ft.colors.GREY_50,
-                    margin=5,
-                    on_click=lambda e: page.close(bt),
-                ),
-                Row(
-                    controls=[
-                        Text(
-                            "Create name for counter",
-                            size=25,
-                            weight=ft.FontWeight.W_300,
-                        )
+        if page.route == "/store":
+            page.views.append(
+                ft.View(
+                    "/store",
+                    [
+                        ft.AppBar(title=ft.Text("Store"), bgcolor=ft.colors.SURFACE_VARIANT),
+                        ft.ElevatedButton("Go Home", on_click=lambda _: page.go("/")),
                     ],
-                    alignment=ft.MainAxisAlignment.CENTER
-                ),
-                Container(
-                    content=counter_name,
-                    padding=16,
-                ),
-                ElevatedButton(
-                    text="Save",
-                    on_click=lambda e: on_save(counter_name.value, e),
-                    width=150,
-                    height=50,
                 )
-            ],
-            alignment=ft.MainAxisAlignment.START,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            spacing=20,
+            )
+        page.update()
 
-        )
-    )
+    def view_pop(view):
+        page.views.pop()
+        top_view = page.views[-1]
+        page.go(top_view.route)
 
-    return bt
+    page.on_route_change = route_change
+    page.on_view_pop = view_pop
+    page.go(page.route)
 
 
-def main(page: Page):
-    page.title = "Faseyha Counter"
-    page.horizontal_alignment = ft.MainAxisAlignment.CENTER
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+ft.app(target=main, view=ft.WEB_BROWSER)
 
-    page.add(
-        Counter("Today"),
-        Counter("Yesterday"),
-        ft.FloatingActionButton(
-            icon=ft.icons.ADD,
-            on_click=lambda _: page.open(input_name(page, _))
-        )
-    )
+'''
+NOTE:
 
+To "navigate" between pages we used page.go(route) - a helper method that 
+updates page.route, calls page.on_route_change event handler to update views 
+and finally calls page.update().
+'''
 
 if __name__ == "__main__":
-    ft.app(target=main, view=None, port=int(os.getenv("PORT", 8502)))
+    # ft.app(target=main, view=None, host="192.168.0.110", port=int(os.getenv("PORT", 8502)))
+    ft.app(target=main)
