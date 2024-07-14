@@ -49,5 +49,5 @@ and finally calls page.update().
 '''
 
 if __name__ == "__main__":
-    ft.app(target=main, view=None, host="192.168.0.110", port=int(os.getenv("PORT", 8502)))
+    ft.app(target=main, view=None, port=int(os.getenv("PORT", 8502)))
     # ft.app(target=main)
