@@ -3,18 +3,11 @@ import os
 import flet as ft
 from views.home import Home
 
-# logging.basicConfig(level=logging.INFO)
-
-
-'''
-In this section, we will learn how to navigate between pages.
-'''
-
-import flet as ft
+logging.basicConfig(level=logging.INFO)
 
 
 def main(page: ft.Page):
-    page.title = "Routes Example"
+    page.title = "TMA RTLT"
     page.vertical_alignment = ft.alignment.center
     def route_change(route):
         print(route)
