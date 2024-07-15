@@ -34,6 +34,41 @@ class scanPage(ft.Container):
                     weight=ft.FontWeight.BOLD
                 ),
 
+                #Buttons
+                ft.Divider(height=9, thickness=3),
+                ft.Text(
+                    value="Work Completed?",
+                    size=20,
+                    italic=True
+                ),
+                ft.Row(
+                    controls=[
+                        ft.TextButton(
+                            text="YES",
+                            on_click= self.on_update,
+
+                        ),
+                        ft.TextButton(
+                            text="NO",
+                            on_click=self.on_update,
+
+                        )
+                    ],
+                    alignment=ft.MainAxisAlignment.SPACE_AROUND
+                )
+
             ]
         )
+
+    def on_update(self, e):
+        print(e.control.text)
+        if e.control.text == "YES":
+            self.web_session.update_work_on(e.control.text)
+        else:
+            self.page.snack_bar = ft.SnackBar(
+                content=ft.Text("OK... Continue working please")
+            )
+            self.page.snack_bar.open = True
+            self.page.update()
+
 

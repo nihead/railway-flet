@@ -102,13 +102,40 @@ class Home(ft.View):
             ),
         ]
     def on_submit(self, e):
+        overlay =ft.Column(
+                    controls=[
+                        ft.Row(
+                            controls=[
+                                ft.Icon(
+                                    ft.icons.RUN_CIRCLE_OUTLINED,
+                                    size=90,
+                                    color=ft.colors.RED_ACCENT_400,
+                                ),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+
+                        ),
+                        ft.Text("Loading..", size=40, weight="bold", color=ft.colors.RED_ACCENT_400),
+
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                )
+        self.page.overlay.append(overlay)
+
+        overlay.visible = True
+        self.page.update()
         if self.web_session.scan(self.user_id_txt.value):
+            overlay.visible = False
+            self.page.update()
             self.page.go("/scanned")
+
         else:
             self.page.snack_bar = ft.SnackBar(
                 content=ft.Text("Invalid User ID"),
             )
             self.page.snack_bar.open = True
+            overlay.visible = False
             self.page.update()
 
     def on_user_input(self, e):

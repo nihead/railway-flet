@@ -4,6 +4,7 @@ import requests
 
 
 class ScannedUser:
+    uid: int = None
     name: str = None
     work_on: str = None
     work_on_code: str = None
@@ -26,6 +27,7 @@ class ScanUser:
     def scan(self, uid) -> bool:
         try:
             print(uid)
+            self.user.uid = uid
             response = self.session.get(f"https://winair.transmaldivian.com/maintenance/timetracking/userScan.rpc?ajaxRequest=true&username=EC{uid}")
             # print(response.text)
             soup = BeautifulSoup(response.text, 'html.parser')
@@ -51,6 +53,10 @@ class ScanUser:
         except Exception as e:
             print(f'user logging error : {e}')
             return False
+
+    def update_work_on(self, ans:str):
+        ws = self.session.post(f"https://winair.transmaldivian.com/maintenance/timetracking/isTaskComplete.rpc?ajaxRequest=true&username={self.user.uid}&completed={ans.upper()}")
+        print(ws.text)
 
     def get_user(self):
         print(f"Name: {self.user.name}")

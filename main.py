@@ -11,6 +11,8 @@ logging.basicConfig(level=logging.INFO)
 def main(page: ft.Page):
     page.title = "TMA RTLT"
     page.theme_mode = ft.ThemeMode.DARK
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
     web_session = ScanUser()
     def route_change(route):
