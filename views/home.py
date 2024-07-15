@@ -1,9 +1,10 @@
 import flet as ft
 
 class Home(ft.View):
-    def __init__(self, page):
+    def __init__(self, page, websession):
         super().__init__()
         self.page = page
+        self.web_session = websession
         self.route = "/"
         self.user_id_txt = ft.TextField(
             hint_text="User ID",
@@ -101,8 +102,14 @@ class Home(ft.View):
             ),
         ]
     def on_submit(self, e):
-        self.page.go("/scanned")
-        self.page.update()
+        if self.web_session.scan(self.user_id_txt.value):
+            self.page.go("/scanned")
+        else:
+            self.page.snack_bar = ft.SnackBar(
+                content=ft.Text("Invalid User ID"),
+            )
+            self.page.snack_bar.open = True
+            self.page.update()
 
     def on_user_input(self, e):
         if not e.control.value.isnumeric():
