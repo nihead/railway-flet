@@ -6,6 +6,10 @@ class StartedTrackingTime(ft.View):
     def __init__(self, page):
         super().__init__()
         self.page = page
+        self.page.overlay.clear()
+        self.on_loading = PageLoading()
+        self.page.overlay.append(self.on_loading)
+
         self.running = "/"
         self.spacing = 0
         self.padding = 0
@@ -30,6 +34,7 @@ class StartedTrackingTime(ft.View):
 
     def updater(self, e):
         print("updater")
+        self.on_loading.visible = True
 
         try:
             session = ScanUser(self.page)
@@ -43,10 +48,22 @@ class StartedTrackingTime(ft.View):
                 self.page_body.username.update()
                 self.page_body.total_lt.update()
                 self.page_body.task_lt.update()
+                self.on_loading.visible = False
+            else:
+                self.on_loading.visible = False
+                self.page.snack_bar = InfoDisplay(f"Error While Loading Page")
+                self.page.snack_bar.open = True
+                self.page.update()
+
 
         except Exception as e:
+            self.on_loading.visible = False
+            self.page.snack_bar = InfoDisplay(f"Error Updataing: {e}")
+            self.page.snack_bar.open = True
+            self.page.update()
             print(e)
         finally:
+            self.on_loading.visible = False
             session.on_close()
             del session
 
@@ -414,3 +431,38 @@ class InfoDisplay(ft.SnackBar):
     def __init__(self, msg):
         super().__init__()
         self.controls = ft.Text(msg)
+
+class PageLoading(ft.Container):
+    def __init__(self):
+        super().__init__()
+        self.visible = False
+        self.expand = True
+        self.content=ft.Stack(
+            controls=[
+                ft.Container(
+                    expand=True,
+                    bgcolor= ft.colors.RED_ACCENT_100,
+                    opacity=0.3,
+                ),
+                ft.Column(
+                    controls=[
+                        ft.Row(
+                            controls=[
+                                ft.Icon(
+                                    ft.icons.RUN_CIRCLE_OUTLINED,
+                                    size=90,
+                                    color=ft.colors.RED_ACCENT_400,
+                                ),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+
+                        ),
+                        ft.Text("Loading..", size=40, weight="bold", color=ft.colors.RED_ACCENT_400),
+
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                )
+
+            ]
+        )

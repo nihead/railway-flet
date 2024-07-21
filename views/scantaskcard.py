@@ -12,6 +12,8 @@ class ScanTasksPage(ft.View):
         super().__init__()
         self.page = page
         self.page.overlay.clear()
+        self.on_loading = PageLoading()
+        self.page.overlay.append(self.on_loading)
         if self.page.client_storage.contains_key("winair_response"):
             self.local_strorage = self.page.client_storage.get("winair_response")
         else:
@@ -377,6 +379,7 @@ class ScanTasksPage(ft.View):
         tid = self.add_task_form_task_id.value
         self.on_add_task_cancel(tid)
         self.on_task_start(tid)
+
         print("end of  Submit ", tid)
 
     def on_saved_task_click(self, e):
@@ -393,6 +396,7 @@ class ScanTasksPage(ft.View):
         print(e.content.controls[0].controls[0])
 
     def on_task_start(self, tid):
+        self.on_loading.visible = True
         self.saved_task_confirm_box.visible = False
         self.dummy_container.visible = False
         self.page.update()
@@ -411,7 +415,9 @@ class ScanTasksPage(ft.View):
 
         if saved:
             self.page.go("/Startedtrackingtime")
+            self.on_loading.visible = False
         else:
+            self.on_loading.visible = False
             self.snack_disp(f"Failed to start!.. {msg}")
 
     def snack_disp(self, msg):
@@ -650,6 +656,41 @@ class ConfirmTaskStart(ft.Container):
     def on_start_task_cancel(self, e):
         self.visible = False
         self.update()
+
+class PageLoading(ft.Container):
+    def __init__(self):
+        super().__init__()
+        self.visible = False
+        self.expand = True
+        self.content=ft.Stack(
+            controls=[
+                ft.Container(
+                    expand=True,
+                    bgcolor= ft.colors.RED_ACCENT_100,
+                    opacity=0.3,
+                ),
+                ft.Column(
+                    controls=[
+                        ft.Row(
+                            controls=[
+                                ft.Icon(
+                                    ft.icons.RUN_CIRCLE_OUTLINED,
+                                    size=90,
+                                    color=ft.colors.RED_ACCENT_400,
+                                ),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+
+                        ),
+                        ft.Text("Loading..", size=40, weight="bold", color=ft.colors.RED_ACCENT_400),
+
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                )
+
+            ]
+        )
 
 
 

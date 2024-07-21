@@ -104,8 +104,61 @@ class Home(ft.View):
                 expand=True,
             ),
         ]
+
     def on_submit(self, e):
-        overlay =ft.Column(
+        overlay =PageLoading()
+        self.page.overlay.append(overlay)
+
+        overlay.visible = True
+        self.page.update()
+        try:
+            wr_ob = ScanUser(self.page)
+            wr = wr_ob.login(self.user_id_txt.value)
+            if wr:
+
+                print(f'username : {self.user_id_txt.value}')
+                overlay.visible = False
+                # self.page.update()
+                self.page.go(f"/{wr.page_title.replace(' ', '')}")
+            else:
+                self.page.snack_bar = ft.SnackBar(
+                    content=ft.Text("Invalid User ID"),
+                )
+                self.page.snack_bar.open = True
+                overlay.visible = False
+                self.page.update()
+
+        except Exception as e:
+            print(f"error on submit: {e}")
+        finally:
+            wr_ob.on_close()
+            del wr_ob
+
+    def on_user_input(self, e):
+        if not e.control.value.isnumeric():
+            print("Invalid input")
+            self.page.snack_bar = ft.SnackBar(
+                content=ft.Text("Invalid User ID"),
+                action="Alright!",
+            )
+            self.page.snack_bar.open = True
+            self.user_id_txt.value = ''
+            self.user_id_txt.focus()
+            self.page.update()
+
+class PageLoading(ft.Container):
+    def __init__(self):
+        super().__init__()
+        self.visible = False
+        self.expand = True
+        self.content=ft.Stack(
+            controls=[
+                ft.Container(
+                    expand=True,
+                    bgcolor= ft.colors.RED_ACCENT_100,
+                    opacity=0.3,
+                ),
+                ft.Column(
                     controls=[
                         ft.Row(
                             controls=[
@@ -124,43 +177,6 @@ class Home(ft.View):
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 )
-        self.page.overlay.append(overlay)
 
-        overlay.visible = True
-        self.page.update()
-        try:
-            wr_ob = ScanUser(self.page)
-            wr = wr_ob.login(self.user_id_txt.value)
-            if wr:
-
-                print(f'username : {self.user_id_txt.value}')
-                overlay.visible = False
-                self.page.update()
-                self.page.go(f"/{wr.page_title.replace(' ', '')}")
-            else:
-                self.page.snack_bar = ft.SnackBar(
-                    content=ft.Text("Invalid User ID"),
-                )
-                self.page.snack_bar.open = True
-                overlay.visible = False
-                self.page.update()
-
-        except Exception as e:
-            print(f"error on submit: {e}")
-        finally:
-            wr_ob.on_close()
-            del wr_ob
-
-
-
-    def on_user_input(self, e):
-        if not e.control.value.isnumeric():
-            print("Invalid input")
-            self.page.snack_bar = ft.SnackBar(
-                content=ft.Text("Invalid User ID"),
-                action="Alright!",
-            )
-            self.page.snack_bar.open = True
-            self.user_id_txt.value = ''
-            self.user_id_txt.focus()
-            self.page.update()
+            ]
+        )

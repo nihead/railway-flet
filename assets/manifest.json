@@ -2,7 +2,6 @@
   "name": "TMA RTLT",
   "short_name": "TMA",
   "start_url": ".",
-  "display": "standalone",
   "background_color": "#fff",
   "description": "TMA Real Time Labour Tracking",
   "icons": [
