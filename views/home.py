@@ -44,7 +44,7 @@ class Home(ft.View):
                                         # company logo
                                         ft.Container(
                                             ft.Image(
-                                                src="./assets/logo.png",
+                                                src="./assets/logo_solo.png",
                                             ),
                                             padding=20,
                                         ),

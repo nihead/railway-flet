@@ -143,7 +143,7 @@ class PageBody(ft.Container):
                     alignment=ft.MainAxisAlignment.CENTER,
                     controls=[
                         ft.Image(
-                            src="./assets/logo_only.png",
+                            src="./assets/logo.png",
                             width=150,
                         )
                     ]

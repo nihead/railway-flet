@@ -229,7 +229,7 @@ class ScanTasksPage(ft.View):
                                         controls=[
                                             ft.Text(
                                                 "RTLT Task Manager",
-                                                size=45,
+                                                size=40,
                                                 weight=ft.FontWeight.W_900,
                                             )
                                         ],
