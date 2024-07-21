@@ -61,7 +61,7 @@ class ScanUser:
 
                         if time_span:
                             timecard_value = time_span.text.strip()
-                            print(f"This Timecard: {timecard_value}")
+                            # print(f"This Timecard: {timecard_value}")
                             self.winairRespose.task_lt = timecard_value
                         else:
                             print("Could not find the time value for 'This Timecard'")

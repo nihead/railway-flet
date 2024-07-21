@@ -415,7 +415,7 @@ class ScanTasksPage(ft.View):
 
     def snack_disp(self, msg):
         self.page.snack_bar = ft.SnackBar(
-            content=ft.Text(f"{msg}......")
+            content=ft.Text(msg)
         )
         self.page.snack_bar.open = True
         self.page.update()
@@ -439,7 +439,7 @@ class TaskContainer(ft.Container):
                             content=ft.Row(
                                 controls=[
                                     ft.Text(task_id),
-                                    ft.Text(f'- {task_desc}') if task_desc else ft.Text(),
+                                    ft.Text(task_desc) if task_desc else ft.Text(),
                                 ],
                                 expand=True
                             ),
