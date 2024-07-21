@@ -5,7 +5,8 @@ class Home(ft.View):
     def __init__(self, page):
         super().__init__()
         self.page = page
-        self.page.client_storage.remove("winair_response")
+        if self.page.client_storage.contains_key("winair_response"):
+            self.page.client_storage.remove("winair_response")
         # self.page.client_storage.set("winair_response", {"name": "Tma", "total_lt":"00:00"})
         self.route = "/"
         self.user_id_txt = ft.TextField(
