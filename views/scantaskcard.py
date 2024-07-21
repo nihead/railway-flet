@@ -15,7 +15,15 @@ class ScanTasksPage(ft.View):
         if self.page.client_storage.contains_key("winair_response"):
             self.local_strorage = self.page.client_storage.get("winair_response")
         else:
-            self.local_strorage = {"name":"Niam"}
+            self.local_strorage = {
+                    "uid": "None",
+                    "name":  "None",
+                    "total_lt":  "00:00",
+                    "task_lt":  "00:00",
+                    "page_title":  "None",
+                    "work_on": "None",
+                    "work_on_code":  "None"
+                                   }
 
         # self.web_session = web_session
         # print(f"current user is {self.web_session.user.name}")
