@@ -1,10 +1,12 @@
 import flet as ft
+from services.webServer import ScanUser
 
 class Home(ft.View):
-    def __init__(self, page, websession):
+    def __init__(self, page):
         super().__init__()
         self.page = page
-        self.web_session = websession
+        self.page.client_storage.remove("winair_response")
+        # self.page.client_storage.set("winair_response", {"name": "Tma", "total_lt":"00:00"})
         self.route = "/"
         self.user_id_txt = ft.TextField(
             hint_text="User ID",
@@ -125,18 +127,30 @@ class Home(ft.View):
 
         overlay.visible = True
         self.page.update()
-        if self.web_session.scan(self.user_id_txt.value):
-            overlay.visible = False
-            self.page.update()
-            self.page.go("/scanned")
+        try:
+            wr_ob = ScanUser(self.page)
+            wr = wr_ob.login(self.user_id_txt.value)
+            if wr:
 
-        else:
-            self.page.snack_bar = ft.SnackBar(
-                content=ft.Text("Invalid User ID"),
-            )
-            self.page.snack_bar.open = True
-            overlay.visible = False
-            self.page.update()
+                print(f'username : {self.user_id_txt.value}')
+                overlay.visible = False
+                self.page.update()
+                self.page.go(f"/{wr.page_title.replace(' ', '')}")
+            else:
+                self.page.snack_bar = ft.SnackBar(
+                    content=ft.Text("Invalid User ID"),
+                )
+                self.page.snack_bar.open = True
+                overlay.visible = False
+                self.page.update()
+
+        except Exception as e:
+            print(f"error on submit: {e}")
+        finally:
+            wr_ob.on_close()
+            del wr_ob
+
+
 
     def on_user_input(self, e):
         if not e.control.value.isnumeric():

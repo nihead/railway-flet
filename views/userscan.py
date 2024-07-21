@@ -1,10 +1,15 @@
 import flet as ft
-from services.webServer import ScannedUser, ScanUser
+
+
+class Drops():
+    def __init__(self):
+        pass
+
 class scanPage(ft.Container):
     def __init__(self, page, web_session):
         super().__init__()
         self.page = page
-        self.web_session: ScannedUser = web_session
+        self.web_session = web_session
         self.auth = self.web_session.get_user()
         self.expand = True
         self.width = 700
@@ -70,5 +75,3 @@ class scanPage(ft.Container):
             )
             self.page.snack_bar.open = True
             self.page.update()
-
-

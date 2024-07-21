@@ -4,8 +4,11 @@ import flet as ft
 from views.home import Home
 from views.userscan import scanPage
 from services.webServer import ScanUser
+from views.scantaskcard import ScanTasksPage
+from views.startedtrackingtime import StartedTrackingTime
 
-logging.basicConfig(level=logging.INFO)
+
+# logging.basicConfig(level=logging.INFO)
 
 
 def main(page: ft.Page):
@@ -13,29 +16,31 @@ def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.DARK
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.navigation_bar = ft.NavigationBar(
+        destinations=[
+            ft.NavigationDestination(icon=ft.icons.EXPLORE, label="Scan Task"),
+            ft.NavigationDestination(icon=ft.icons.COMMUTE, label="Saved Task"),
+        ]
+    )
 
-    web_session = ScanUser()
     def route_change(route):
         print(route)
         page.views.clear()
+        if page.route == "/":
+            page.views.append( Home(page))
 
-        page.views.append(
-            Home(page, web_session)
-        )
-        if page.route == "/scanned":
-            page.views.append(
-                ft.View(
-                    "/scanned",
-                    [
-                        ft.AppBar(title=ft.Text("User Scan"), bgcolor=ft.colors.SURFACE_VARIANT),
-                        scanPage(page, web_session),
-                        ft.ElevatedButton("Go Home", on_click=lambda _: page.go("/")),
-                    ],
-                )
-            )
+        if page.route == "/Startedtrackingtime":
+            page.views.append(StartedTrackingTime(page))
+
+        elif page.route == "/Scantaskcard":
+
+            page.views.append(ScanTasksPage(page))
 
 
         page.update()
+
+    def on_page_disconnects(e):
+        print("Session disconnected")
 
     def view_pop(view):
         page.views.pop()
@@ -43,8 +48,10 @@ def main(page: ft.Page):
         page.go(top_view.route)
 
     page.on_route_change = route_change
+    page.on_disconnect = on_page_disconnects
     page.on_view_pop = view_pop
-    page.go(page.route)
+    # page.go(page.route)
+    page.go("/")
 
 
 if __name__ == "__main__":
