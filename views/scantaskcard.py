@@ -243,7 +243,7 @@ class ScanTasksPage(ft.View):
                                     alignment=ft.alignment.center
                                 ),
                                 # user info
-                                UserInfo(f'{self.local_strorage['name']} (EC{self.local_strorage['uid']}) ', self.local_strorage['total_lt']),
+                                UserInfo(f"{self.local_strorage['name']} (EC{self.local_strorage['uid']})", self.local_strorage['total_lt']),
                             #body
                             ft.Container(
                                 bgcolor=ft.colors.GREY_500,
