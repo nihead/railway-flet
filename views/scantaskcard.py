@@ -305,7 +305,10 @@ class ScanTasksPage(ft.View):
 
     def on_save(self, e):
         try:
-            self.saved_tasks = self.page.client_storage.get("saved_tasks")
+            if self.page.client_storage.contains_key("saved_tasks"):
+                self.saved_tasks = self.page.client_storage.get("saved_tasks")
+            else:
+                self.saved_tasks = [{"task_id": "", "task_desc": ""}]
             print("try saving")
             if self.add_task_form_task_id.value not in [ta["task_id"] for ta in self.saved_tasks]:
                 print('Saving ...')
@@ -374,9 +377,7 @@ class ScanTasksPage(ft.View):
         tid = self.add_task_form_task_id.value
         self.on_add_task_cancel(tid)
         self.on_task_start(tid)
-        print("After Start ", tid)
-
-
+        print("end of  Submit ", tid)
 
     def on_saved_task_click(self, e):
         clicked_task  = e.content.controls[0].controls[0].content.controls[0].value
@@ -409,7 +410,7 @@ class ScanTasksPage(ft.View):
             del save
 
         if saved:
-            self.page.go("/Scantaskcard")
+            self.page.go("/Startedtrackingtime")
         else:
             self.snack_disp(f"Failed to start!.. {msg}")
 
