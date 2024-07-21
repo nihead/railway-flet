@@ -58,6 +58,16 @@ class StartedTrackingTime(ft.View):
             self.winSaved = self.page.client_storage.get("winair_response")
             print(self.winSaved)
             self.page.update()
+        else:
+            self.winSaved = {
+                    "uid": "None",
+                    "name":  "None",
+                    "total_lt":  "00:00",
+                    "task_lt":  "00:00",
+                    "page_title":  "None",
+                    "work_on": "None",
+                    "work_on_code":  "None"
+                                   }
 
 class PageHeader(ft.Container):
     def __init__(self, page, updater):
@@ -249,6 +259,16 @@ class PageBody(ft.Container):
     def get_saved(self):
         if self.page.client_storage.contains_key("winair_response"):
             self.winSaved = self.page.client_storage.get("winair_response")
+        else:
+            self.winSaved = {
+                "uid": "None",
+                "name": "None",
+                "total_lt": "00:00",
+                "task_lt": "00:00",
+                "page_title": "None",
+                "work_on": "None",
+                "work_on_code": "None"
+            }
 
     def on_btn_clicked(self, e):
         btn = e.control.content.controls[0].value
@@ -378,28 +398,19 @@ class PageBodyCard(ft.Card):
     def get_saved(self):
         if self.page.client_storage.contains_key("winair_response"):
             self.winSaved = self.page.client_storage.get("winair_response")
+        else:
+            self.winSaved = {
+                    "uid": "None",
+                    "name":  "None",
+                    "total_lt":  "00:00",
+                    "task_lt":  "00:00",
+                    "page_title":  "None",
+                    "work_on": "None",
+                    "work_on_code":  "None"
+                                   }
 
 
 class InfoDisplay(ft.SnackBar):
     def __init__(self, msg):
         super().__init__()
         self.controls = ft.Text(msg)
-
-
-
-def main(page:ft.page):
-    page.title= 'Started Tracking Time'
-
-    def on_page_route_change(e):
-        page.views.append(
-            StartedTrackingTime(page)
-        )
-
-    page.on_route_change = on_page_route_change
-
-    page.go(page.route)
-
-
-
-if __name__ == '__main__':
-    ft.app(target=main)
