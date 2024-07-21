@@ -275,13 +275,13 @@ class PageBody(ft.Container):
         try:
             print("tring...")
             w_obj = ScanUser(self.page)
-            print(f'uid: {self.winSaved['uid']}')
+            # print(f'uid: {self.winSaved['uid']}')
             w_login = w_obj.login(self.winSaved['uid'])
             self.get_saved()
             print(w_login)
             print(self.winSaved)
             if w_login:
-                print(f"page title: {self.winSaved['page_title']}")
+                # print(f"page title: {self.winSaved['page_title']}")
                 if  w_obj.update_work_on(btn):
                     if btn == "YES":
                         InfoDisplay("Please delete Saved Task from pending task list")
