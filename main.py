@@ -2,13 +2,11 @@ import logging
 import os
 import flet as ft
 from views.home import Home
-from views.userscan import scanPage
-from services.webServer import ScanUser
 from views.scantaskcard import ScanTasksPage
 from views.startedtrackingtime import StartedTrackingTime
 
 
-# logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 
 def main(page: ft.Page):
