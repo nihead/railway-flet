@@ -12,7 +12,10 @@ class ScanTasksPage(ft.View):
         super().__init__()
         self.page = page
         self.page.overlay.clear()
-        self.local_strorage = self.page.client_storage.get("winair_response")
+        if self.page.client_storage.contains_key("winair_response"):
+            self.local_strorage = self.page.client_storage.get("winair_response")
+        else:
+            self.local_strorage = {"name":"Niam"}
 
         # self.web_session = web_session
         # print(f"current user is {self.web_session.user.name}")
