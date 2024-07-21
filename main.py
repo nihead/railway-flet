@@ -6,7 +6,7 @@ from views.scantaskcard import ScanTasksPage
 from views.startedtrackingtime import StartedTrackingTime
 
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 
 
 def main(page: ft.Page):
@@ -38,7 +38,19 @@ def main(page: ft.Page):
         page.update()
 
     def on_page_disconnects(e):
+        try:
+            page.session.clear()
+        except Exception as e:
+            print(e)
         print("Session disconnected")
+
+    def on_page_connect(e):
+        print("Page connected")
+        ip = page.client_ip
+        host = page.client_user_agent
+        print(ip)
+        print(host)
+
 
     def view_pop(view):
         page.views.pop()
@@ -47,6 +59,7 @@ def main(page: ft.Page):
 
     page.on_route_change = route_change
     page.on_disconnect = on_page_disconnects
+    page.on_connect = on_page_connect
     page.on_view_pop = view_pop
     # page.go(page.route)
     page.go("/")
