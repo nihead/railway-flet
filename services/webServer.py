@@ -101,7 +101,12 @@ class ScanUser:
     def update_work_on(self, ans:str):
         ws = self.session.post(f"https://winair.transmaldivian.com/maintenance/timetracking/isTaskComplete.rpc?ajaxRequest=true&username={self.winairRespose.uid}&completed={ans.upper()}")
         if ws.status_code == 200:
-            return True
+            away = self.session.post(f"https://winair.transmaldivian.com/maintenance/timetracking/woTaskScan.rpc?ajaxRequest=true&username={self.winairRespose.uid}&wotask=AWAY")
+            if away.status_code == 200:
+                print("Task completed and is away")
+                return True
+            else:
+                return False
         else:
             return False
 
