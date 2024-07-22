@@ -17,6 +17,7 @@ class ScanTasksPage(ft.View):
         if self.page.client_storage.contains_key("winair_response"):
             self.local_strorage = self.page.client_storage.get("winair_response")
         else:
+            self.page.go("/")
             self.local_strorage = {
                     "uid": "None",
                     "name":  "None",
@@ -49,9 +50,8 @@ class ScanTasksPage(ft.View):
 
             ],
         )
-        self.empty_list = SavedEmpty()
-        # self.page.client_storage.set("saved_tasks", [{"task_id":"1001", "task_desc":"Task 1"},
-        #                                              {"task_id":"1002", "task_desc":"Task 2"}])
+        self.empty_list = SavedEmpty(self.on_add_task_form)
+
 
         # saved task declaration
         if self.page.client_storage.contains_key('saved_tasks'):
@@ -212,7 +212,7 @@ class ScanTasksPage(ft.View):
         self.saved_task_confirm_box = ConfirmTaskStart(self.on_task_start)
 
         # self.expand = True
-        self.route = "/Startedtrackingtime"
+        self.route = "/Scantaskcard"
         self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         self.bgcolor = ft.colors.SURFACE_VARIANT
         self.spacing= 0
@@ -522,7 +522,7 @@ class UserInfo(ft.Container):
         )
 
 class SavedEmpty(ft.Column):
-    def __init__(self):
+    def __init__(self, task_form):
         super().__init__()
         self.alignment = ft.MainAxisAlignment.CENTER
         self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -530,6 +530,7 @@ class SavedEmpty(ft.Column):
 
         self.controls = [
             ft.Container(
+                on_click=task_form,
                 bgcolor=ft.colors.RED_ACCENT_100,
                 padding=ft.padding.symmetric(vertical=40, horizontal=20),
                 margin=20,
@@ -553,9 +554,31 @@ class SavedEmpty(ft.Column):
                                     size=30,
                                     italic=True,
                                     color=ft.colors.RED_ACCENT_700,
-                                )
+                                ),
                             ]
-                        )
+                        ),
+                        ft.Row(
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            controls=[
+                                ft.Text(
+                                    value="or",
+                                    size=12,
+                                    italic=True,
+                                    color=ft.colors.RED_ACCENT_700,
+                                ),
+                            ]
+                        ),
+                        ft.Row(
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            controls=[
+                                ft.Text(
+                                    value="Start Working On a Task",
+                                    size=30,
+                                    italic=True,
+                                    color=ft.colors.RED_ACCENT_700,
+                                ),
+                            ]
+                        ),
                     ]
                 )
             )

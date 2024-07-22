@@ -16,13 +16,6 @@ def main(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
-    # page.navigation_bar = ft.NavigationBar(
-    #     destinations=[
-    #         ft.NavigationDestination(icon=ft.icons.EXPLORE, label="Scan Task"),
-    #         ft.NavigationDestination(icon=ft.icons.COMMUTE, label="Saved Task"),
-    #     ]
-    # )
-
     def route_change(route):
         print(route)
         page.views.clear()
@@ -41,22 +34,24 @@ def main(page: ft.Page):
 
     def on_page_disconnects(e):
         try:
-            page.session.clear()
+            ip = page.client_ip
+            host = 498123938
+            token = "6145540890:AAFBuPLvWo6uSNneUvg4f9STL1BsgoiDhLY"
+            url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={host}&text={ip}"
+            try:
+                requests.get(url)
+            except Exception as e:
+                print("Error while connecting to Telegram")
+                print(e)
         except Exception as e:
             print(e)
         print("Session disconnected")
 
     def on_page_connect(e):
-        print("Page connected")
+
         ip = page.client_ip
-        host = 498123938
-        token = "6145540890:AAFBuPLvWo6uSNneUvg4f9STL1BsgoiDhLY"
-        url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={host}&text={ip}"
-        try:
-            requests.get(url)
-        except Exception as e:
-            print("Error while connecting to Telegram")
-            print(e)
+        print(ip, " :Refreshed")
+
 
 
     def view_pop(view):
@@ -74,4 +69,3 @@ def main(page: ft.Page):
 
 if __name__ == "__main__":
     ft.app(target=main, view=None, port=int(os.getenv("PORT", 8502)))
-    # ft.app(target=main)

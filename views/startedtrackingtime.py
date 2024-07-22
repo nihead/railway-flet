@@ -10,7 +10,7 @@ class StartedTrackingTime(ft.View):
         self.on_loading = PageLoading()
         self.page.overlay.append(self.on_loading)
 
-        self.running = "/"
+        self.route = "/Startedtrackingtime"
         self.spacing = 0
         self.padding = 0
         self.get_saved()
@@ -76,15 +76,16 @@ class StartedTrackingTime(ft.View):
             print(self.winSaved)
             self.page.update()
         else:
-            self.winSaved = {
-                    "uid": "None",
-                    "name":  "None",
-                    "total_lt":  "00:00",
-                    "task_lt":  "00:00",
-                    "page_title":  "None",
-                    "work_on": "None",
-                    "work_on_code":  "None"
-                                   }
+            self.page.go("/")
+            # self.winSaved = {
+            #         "uid": "None",
+            #         "name":  "None",
+            #         "total_lt":  "00:00",
+            #         "task_lt":  "00:00",
+            #         "page_title":  "None",
+            #         "work_on": "None",
+            #         "work_on_code":  "None"
+            #                        }
 
 class PageHeader(ft.Container):
     def __init__(self, page, updater):
@@ -277,15 +278,16 @@ class PageBody(ft.Container):
         if self.page.client_storage.contains_key("winair_response"):
             self.winSaved = self.page.client_storage.get("winair_response")
         else:
-            self.winSaved = {
-                "uid": "None",
-                "name": "None",
-                "total_lt": "00:00",
-                "task_lt": "00:00",
-                "page_title": "None",
-                "work_on": "None",
-                "work_on_code": "None"
-            }
+            self.page.go("/")
+            # self.winSaved = {
+            #     "uid": "None",
+            #     "name": "None",
+            #     "total_lt": "00:00",
+            #     "task_lt": "00:00",
+            #     "page_title": "None",
+            #     "work_on": "None",
+            #     "work_on_code": "None"
+            # }
 
     def on_btn_clicked(self, e):
         btn = e.control.content.controls[0].value
@@ -416,15 +418,16 @@ class PageBodyCard(ft.Card):
         if self.page.client_storage.contains_key("winair_response"):
             self.winSaved = self.page.client_storage.get("winair_response")
         else:
-            self.winSaved = {
-                    "uid": "None",
-                    "name":  "None",
-                    "total_lt":  "00:00",
-                    "task_lt":  "00:00",
-                    "page_title":  "None",
-                    "work_on": "None",
-                    "work_on_code":  "None"
-                                   }
+            self.page.go("/")
+            # self.winSaved = {
+            #         "uid": "None",
+            #         "name":  "None",
+            #         "total_lt":  "00:00",
+            #         "task_lt":  "00:00",
+            #         "page_title":  "None",
+            #         "work_on": "None",
+            #         "work_on_code":  "None"
+            #                        }
 
 
 class InfoDisplay(ft.SnackBar):
