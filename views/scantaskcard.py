@@ -245,7 +245,7 @@ class ScanTasksPage(ft.View):
                                     alignment=ft.alignment.center
                                 ),
                                 # user info
-                                UserInfo(self.local_strorage['name'], self.local_strorage['total_lt']),
+                                UserInfo(self.local_strorage['name'], self.local_strorage['total_lt'], self.on_break_start),
                             #body
                             ft.Container(
                                 bgcolor=ft.colors.GREY_500,
@@ -423,7 +423,9 @@ class ScanTasksPage(ft.View):
             self.on_loading.visible = False
             self.snack_disp(f"Failed to start!.. {msg}")
 
-    def on_break_start(self):
+    def on_break_start(self, e):
+        self.on_loading.visible = True
+        self.page.update()
         print("On Break ",self.local_strorage['uid'])
         try:
             w_obj = ScanUser(self.page)
@@ -431,13 +433,22 @@ class ScanTasksPage(ft.View):
             if login:
                 w_obj.on_break_start()
                 if w_obj:
+                    self.on_loading.visible = False
+                    self.page.update()
                     self.snack_disp("Break Started...")
                 else:
+                    self.on_loading.visible = False
+                    self.page.update()
                     self.snack_disp("Failed to save Status as BREAK...")
 
         except Exception as e:
             self.snack_disp(f"Error while saving status break:-> {e}")
             print("Error while saving on Braek", e)
+        finally:
+            self.on_loading.visible = False
+            self.page.update()
+            w_obj.on_close()
+            del w_obj
 
     def snack_disp(self, msg):
         self.page.snack_bar = ft.SnackBar(

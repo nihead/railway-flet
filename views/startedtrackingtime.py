@@ -129,6 +129,7 @@ class PageBody(ft.Container):
     def __init__(self, page):
         super().__init__()
         self.page = page
+        self.on_loading = PageLoading
         self.get_saved()
         #variables
         self.username = ft.Text(
@@ -290,6 +291,8 @@ class PageBody(ft.Container):
             # }
 
     def on_btn_clicked(self, e):
+        self.on_loading.visible = True
+        self.page.update()
         btn = e.control.content.controls[0].value
         try:
             print("tring...")
@@ -303,22 +306,30 @@ class PageBody(ft.Container):
                 # print(f"page title: {self.winSaved['page_title']}")
                 if  w_obj.update_work_on(btn):
                     if btn == "YES":
+                        self.on_loading.visible = False
+                        self.page.update()
                         InfoDisplay("Please delete Saved Task from pending task list")
                         self.page.snack_bar.open= True
                         self.page.update()
                         sleep(3)
-                    self.page.go("/Scantaskcard")
+                        self.page.go("/Scantaskcard")
 
                 else:
+                    self.on_loading.visible = False
+                    self.page.update()
                     print("work update failed")
                     self.page.snack_bar = InfoDisplay("update Failed...try again")
                     self.page.snack_bar.open = True
                     self.page.update()
             else:
+                self.on_loading.visible = False
+                self.page.update()
                 print("login failed")
                 self.page.snack_bar = InfoDisplay("Login Failed...")
                 self.page.snack_bar.open = True
                 self.page.update()
+                sleep(3)
+                self.page.go("/")
 
         except Exception as e:
             print("onerror")
@@ -326,6 +337,8 @@ class PageBody(ft.Container):
             self.page.snack_bar = InfoDisplay(f"ERROR...{e}")
             self.page.snack_bar.open = True
             self.page.update()
+            sleep(3)
+            self.page.go("/")
         finally:
             w_obj.on_close()
             del w_obj
