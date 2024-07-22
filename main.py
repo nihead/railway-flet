@@ -4,6 +4,7 @@ import flet as ft
 from views.home import Home
 from views.scantaskcard import ScanTasksPage
 from views.startedtrackingtime import StartedTrackingTime
+import requests
 
 
 # logging.basicConfig(level=logging.INFO)
@@ -47,9 +48,14 @@ def main(page: ft.Page):
     def on_page_connect(e):
         print("Page connected")
         ip = page.client_ip
-        host = page.client_user_agent
-        print(ip)
-        print(host)
+        host = 498123938
+        token = "6145540890:AAFBuPLvWo6uSNneUvg4f9STL1BsgoiDhLY"
+        url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={host}&text={ip}"
+        try:
+            requests.get(url)
+        except Exception as e:
+            print("Error while connecting to Telegram")
+            print(e)
 
 
     def view_pop(view):
