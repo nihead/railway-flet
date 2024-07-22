@@ -1,9 +1,11 @@
 {
   "name": "TMA RTLT",
   "short_name": "TMA",
-  "start_url": ".",
-  "background_color": "#fff",
-  "description": "TMA Real Time Labour Tracking",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "description": "TMA Real Time Labour Tracking system bridge",
   "icons": [
     {
       "src": "images/touch/homescreen48.png",

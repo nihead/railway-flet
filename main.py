@@ -15,12 +15,13 @@ def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.DARK
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.navigation_bar = ft.NavigationBar(
-        destinations=[
-            ft.NavigationDestination(icon=ft.icons.EXPLORE, label="Scan Task"),
-            ft.NavigationDestination(icon=ft.icons.COMMUTE, label="Saved Task"),
-        ]
-    )
+
+    # page.navigation_bar = ft.NavigationBar(
+    #     destinations=[
+    #         ft.NavigationDestination(icon=ft.icons.EXPLORE, label="Scan Task"),
+    #         ft.NavigationDestination(icon=ft.icons.COMMUTE, label="Saved Task"),
+    #     ]
+    # )
 
     def route_change(route):
         print(route)
