@@ -29,7 +29,6 @@ def main(page: ft.Page):
 
             page.views.append(ScanTasksPage(page))
 
-
         page.update()
 
     def on_page_disconnects(e):

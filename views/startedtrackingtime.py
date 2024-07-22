@@ -444,8 +444,8 @@ class PageLoading(ft.Container):
             controls=[
                 ft.Container(
                     expand=True,
-                    bgcolor= ft.colors.RED_ACCENT_100,
-                    opacity=0.3,
+                    bgcolor=ft.colors.BLACK87,
+                    opacity=0.9,
                 ),
                 ft.Column(
                     controls=[

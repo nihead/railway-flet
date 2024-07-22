@@ -202,8 +202,8 @@ class ScanTasksPage(ft.View):
         #dummy container
         self.dummy_container = ft.Container(
             expand=True,
-            opacity=0.3,
-            bgcolor=ft.colors.RED,
+            bgcolor=ft.colors.BLACK87,
+            opacity=0.9,
             content=None,
             visible=False
         )
@@ -277,7 +277,10 @@ class ScanTasksPage(ft.View):
                                                     right=5,
                                                     bottom=10,
                                                     shape=ft.CircleBorder(),
-                                                    on_click=self.on_add_task_form
+                                                    on_click=self.on_add_task_form,
+                                                    bgcolor=ft.colors.RED_ACCENT_700,
+
+
                                                 )
                                             ]
                                         ),
@@ -420,6 +423,22 @@ class ScanTasksPage(ft.View):
             self.on_loading.visible = False
             self.snack_disp(f"Failed to start!.. {msg}")
 
+    def on_break_start(self):
+        print("On Break ",self.local_strorage['uid'])
+        try:
+            w_obj = ScanUser(self.page)
+            login = w_obj.login(self.local_strorage['uid'])
+            if login:
+                w_obj.on_break_start()
+                if w_obj:
+                    self.snack_disp("Break Started...")
+                else:
+                    self.snack_disp("Failed to save Status as BREAK...")
+
+        except Exception as e:
+            self.snack_disp(f"Error while saving status break:-> {e}")
+            print("Error while saving on Braek", e)
+
     def snack_disp(self, msg):
         self.page.snack_bar = ft.SnackBar(
             content=ft.Text(msg)
@@ -477,10 +496,11 @@ class TaskContainer(ft.Container):
 
 
 class UserInfo(ft.Container):
-    def __init__(self, user_id, total_lt):
+    def __init__(self, user_id, total_lt, on_break):
         super().__init__()
         self.user_id = user_id
         self.total_lt = total_lt
+        self.on_break = on_break
         self.bgcolor = ft.colors.GREY_900
         self.opacity =0.6
         self.padding = 25
@@ -515,7 +535,35 @@ class UserInfo(ft.Container):
                             size=30,
                             color=ft.colors.WHITE,
                             weight="bold",
+                        ),
+                        ft.Row(expand=True),
+                        ft.ElevatedButton(
+                            on_click=self.on_break,
+                            content=ft.Container(
+                                padding=ft.padding.all(10),
+                                content=ft.Row(
+                                    controls=[
+                                        ft.Icon(
+                                            name=ft.icons.FREE_BREAKFAST_OUTLINED,
+                                            size=25,
+                                        ),
+                                        ft.Text(
+                                            "BREAK",
+                                            size=18,
+                                            weight=ft.FontWeight.W_700,
+                                        ),
+                                    ],
+                                    alignment=ft.MainAxisAlignment.CENTER,
+                                    spacing=10,
+                                ),
+                            ),
+                            style=ft.ButtonStyle(
+                                bgcolor=ft.colors.RED_ACCENT_700,
+                                overlay_color=ft.colors.BLUE_GREY_400,
+                                elevation=5,
+                            ),
                         )
+
                     ]
                 )
             ]
@@ -689,8 +737,8 @@ class PageLoading(ft.Container):
             controls=[
                 ft.Container(
                     expand=True,
-                    bgcolor= ft.colors.RED_ACCENT_100,
-                    opacity=0.3,
+                    bgcolor=ft.colors.BLACK87,
+                    opacity=0.9,
                 ),
                 ft.Column(
                     controls=[

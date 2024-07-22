@@ -110,7 +110,12 @@ class ScanUser:
         else:
             return False
 
-        print(ws.text)
+    def on_break_start(self):
+        ob = self.session.post(f"https://winair.transmaldivian.com/maintenance/timetracking/woTaskScan.rpc?ajaxRequest=true&username={self.winairRespose.uid}&wotask=BREAK")
+        if ob.status_code == 200:
+            return True
+        else:
+            return False
 
     def on_close(self):
         del self.winairRespose
